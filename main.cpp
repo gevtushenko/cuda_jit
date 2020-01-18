@@ -27,7 +27,7 @@ extern \"C\" __global__ void saxpy (float a, const float *x, const float *y, flo
 {                                                                                                  \n\
   const size_t tid = blockIdx.x * blockDim.x + threadIdx.x;                                        \n\
   if (tid < n)                                                                                     \n\
-    out[tid] = a * x[tid] + y[tid];                                                                 \n\
+    out[tid] = a * x[tid] + y[tid];                                                                \n\
 }                                                                                                  \n";
 
   std::cout << "SRC: \n" << saxpy << std::endl;
