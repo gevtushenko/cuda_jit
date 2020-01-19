@@ -3,6 +3,7 @@
 //
 
 #include <cuda_jit.h>
+#include <cuda_runtime.h>
 
 #include "map.h"
 
@@ -21,6 +22,8 @@ int main ()
 
   nlohmann::json data;
   data["N"] = 1024;
-  saxpy.render (data);
-  std::cout << saxpy.get_body () << std::endl;
+
+  auto saxpy_kernel = saxpy.compile (data);
+
+  cudaDeviceSynchronize ();
 }
