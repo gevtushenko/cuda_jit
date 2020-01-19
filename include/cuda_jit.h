@@ -8,25 +8,48 @@
 #include <iostream>
 #include <string>
 
+#include "nlohmann/json.hpp"
+
 #include "map.h"
 
-template <typename... args_types>
-class cuda_jit
+class cuda_jit_base
 {
   const std::string name;
   const std::string params;
-  const std::string body;
+  const std::string body_template;
+
+  std::string body;
+
 public:
-  cuda_jit (
+  cuda_jit_base (
     const std::string &kernel_name,
     const std::string &kernel_params,
     const std::string &kernel_body)
     : name (kernel_name)
     , params (kernel_params)
-    , body (kernel_body)
+    , body_template (kernel_body)
   {
-    std::cout << "__global__ void " << name << " (" << params << ") \n" << body << std::endl;
+    std::cout << "__global__ void " << name << " (" << params << ") \n" << body_template << std::endl;
   }
+
+  void render (const nlohmann::json &json);
+
+  const std::string &get_body ()
+  {
+    return body;
+  }
+};
+
+template <typename... args_types>
+class cuda_jit : public cuda_jit_base
+{
+public:
+  cuda_jit (
+    const std::string &kernel_name,
+    const std::string &kernel_params,
+    const std::string &kernel_body)
+    : cuda_jit_base (kernel_name, kernel_params, kernel_body)
+  { }
 
   void operator ()(args_types... args)
   {

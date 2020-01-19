@@ -12,10 +12,15 @@ int main ()
     {
       const size_t tid = threadIdx.x;
 
-      if (tid < n)
+      if (tid < {{ N }})
         {
           // Test comment
           out[tid] = a * x[tid] + y[tid];
         }
-    }, (float, a), (const float *, x), (const float *, y), (float *, out), (size_t, n));
+    }, (float, a), (const float *, x), (const float *, y), (float *, out));
+
+  nlohmann::json data;
+  data["N"] = 1024;
+  saxpy.render (data);
+  std::cout << saxpy.get_body () << std::endl;
 }

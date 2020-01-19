@@ -8,7 +8,7 @@ find_library(CUDA_NVRTC_LIB libnvrtc nvrtc HINTS "${CUDA_TOOLKIT_ROOT_DIR}/lib64
 
 add_library(cuda_jit)
 target_sources(cuda_jit PUBLIC include/cuda_jit.h include/map.h PRIVATE src/cuda_jit.cpp)
-target_include_directories(cuda_jit PUBLIC include)
+target_include_directories(cuda_jit PUBLIC include external/json PRIVATE external/inja)
 target_link_libraries(cuda_jit PRIVATE ${CUDA_LIBRARIES} ${CUDA_NVRTC_LIB} ${CUDA_CUDA_LIBRARY})
 
 add_executable(direct_jit main.cpp)
