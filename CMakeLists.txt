@@ -11,10 +11,6 @@ target_sources(cuda_jit PUBLIC include/cuda_jit.h include/map.h PRIVATE src/cuda
 target_include_directories(cuda_jit PUBLIC ${CUDA_INCLUDE_DIRS} include external/json PRIVATE external/inja)
 target_link_libraries(cuda_jit PUBLIC ${CUDA_LIBRARIES} PRIVATE ${CUDA_NVRTC_LIB} ${CUDA_CUDA_LIBRARY})
 
-add_executable(direct_jit main.cpp)
-target_include_directories(direct_jit PRIVATE ${CUDA_INCLUDE_DIRS})
-target_link_libraries(direct_jit ${CUDA_LIBRARIES} ${CUDA_NVRTC_LIB} ${CUDA_CUDA_LIBRARY})
-
 add_executable(example)
 target_sources(example PRIVATE example.cpp)
 target_link_libraries(example cuda_jit)
