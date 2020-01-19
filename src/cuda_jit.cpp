@@ -90,4 +90,9 @@ std::unique_ptr<char[]> cuda_jit_base::compile_base (const nlohmann::json &json)
   return std::move (ptx);
 }
 
+void kernel_base::launch_base (dim3 grid_size, dim3 block_size, void **params)
+{
+  throw_on_error (cuLaunchKernel (impl->kernel_fn, grid_size.x, grid_size.y, grid_size.z, block_size.x, block_size.y, block_size.z, 0, 0, params, nullptr));
+}
+
 }

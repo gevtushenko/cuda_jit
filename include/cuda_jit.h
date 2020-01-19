@@ -28,7 +28,7 @@ public:
   ~kernel_base ();
 
 protected:
-  void launch_base (dim3 grid_size, dim3 block_size);
+  void launch_base (dim3 grid_size, dim3 block_size, void **params);
 
 private:
   std::unique_ptr<char[]> ptx;
@@ -38,6 +38,8 @@ private:
 template<typename... args_types>
 class kernel : public kernel_base
 {
+  std::vector<void*> params;
+
 public:
   kernel (kernel &&) = default;
   explicit kernel (const std::string &kernel_name, std::unique_ptr<char[]> ptx_arg)
@@ -46,7 +48,8 @@ public:
 
   void launch (dim3 grid_size, dim3 block_size, args_types... args)
   {
-
+    params = { &args... };
+    kernel_base::launch_base (grid_size, block_size, params.data ());
   }
 };
 
